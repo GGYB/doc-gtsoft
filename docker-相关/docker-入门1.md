@@ -42,3 +42,33 @@ docker支持在windows，linux，macos下使用。无论使用哪个系统均可
 * [mac docker安装包地址](https://www.docker.com/docker-mac)
 * [ubuntu docker安装地址](https://www.docker.com/docker-ubuntu)
 
+> 在安装完成后，需要把当前用户添加到docker用户组，或者以管理员权限运行，否则docker无法正常运行
+
+安装完成后，在命令行敲下如下的命令,运行第一个hello-world
+
+``` bash
+$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+...(snipped)...
+
+```
+
+国内因为网络环境，从中央结点拉取镜像会比较慢，可以配置docker-cn的国内镜像。
+
+```
+{
+  "registry-mirrors": ["https://registry.docker-cn.com"]
+}
+```
+
+### 1.4 docker与kubernetes
+说到容器，就不得不提到容器的编排，部署，管理，维护，更新等操作。kubernetes已经成为事实上的标准，并且已经被docker官方所支持。
+>Kubernetes是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。
+
+>Kubernetes一个核心的特点就是能够自主的管理容器来保证云平台中的容器按照用户的期望状态运行着（比如用户想让apache一直运行，用户不需要关心怎么去做，Kubernetes会自动去监控，然后去重启，新建，总之，让apache一直提供服务），管理员可以加载一个微型服务，让规划器来找到合适的位置，同时，Kubernetes也系统提升工具以及人性化方面，让用户能够方便的部署自己的应用（就像canary deployments）。
+
+
