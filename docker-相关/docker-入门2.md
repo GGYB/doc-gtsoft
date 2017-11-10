@@ -39,6 +39,7 @@ docker镜像并不是像操作系统安装包一样是一个完整的ios文件�
     
 当然我们可以说尽量用同等的环境，但是当面对以下情况时。就不得不做出选择了。在服务器上已经运行了一个基于jdk8的程序，我们现在需要再部署一个基于jdk7开发的程序上去时，就不得不做出选择了。
 
+#### 构建发布镜像
 通过docker，我们可以获取一个包含了java运行时的镜像，不需要安装依赖。然后我们可以以这个镜像作为基础，将我们的代码，依赖，运行时构建出一个新的镜像。
 
 构建这个新镜像的文件称为Dockerfile,这是一个java程序镜像示例
@@ -60,6 +61,34 @@ ENV REDIS_HOST localhost
 CMD ["java", "-jar","/app.jar","--spring.datasource.url=jdbc:mysql://${DB_HOST}:3306/yunsouth_api","--spring.redis.host=${REDIS_HOST}","--RSAKEY.publicKeyPath=/RSAKEY/public_key.der","--RSAKEY.privateKeyPath=/RSAKEY/private_key.der"]
 
 ```
+
+#### 编译到本地镜像仓库
+把jar包和Dockerfile放入同一个文件夹下面。形式如下:
+``` bash
+$ ls
+XXX-API-1.0.0-SNAPSHOT.jar  Dockerfile
+```
+
+通过cmd命令将其编译，使用-t参数可以进行重命名
+```bash
+$ docker build -t javaApi
+```
+
+接下来就可以在本地镜像仓库中查看到该镜像
+``` bash
+ $ docker images
+
+REPOSITORY            TAG                 IMAGE ID
+javaApi              latest              326387cea398
+```
+
+接下来开启一个容器来运行该镜像, -p将容器中的8080端口映射到宿主机的8080端口（该jar包在8080端口提供服务）。
+``` bash
+$ docker run javaApi -p 4000:8080
+```
+
+现在就可以在宿主机上通过4000端口访问该容器中8080端口的jar包服务
+>注：通过容器的形式，我们可以方便的开启多个相同的服务，他们将拥有相同的运行环境，并且相互隔离。某个服务出问题并不会波及到其他的服务。
 
 
 ### 2.3 docker仓库
